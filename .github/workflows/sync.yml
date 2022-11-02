@@ -3,6 +3,7 @@ name: Sync ZH to GH
 on:
   schedule:
     - cron: "*/15 * * * *"
+  workflow_dispatch:
 
 jobs:
   sync:
