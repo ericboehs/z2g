@@ -1,0 +1,25 @@
+name: Sync ZH to GH
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+
+jobs:
+  sync:
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      ZH_TOKEN: ${{ secrets.ZH_TOKEN }}
+      Z2G_COLUMN_NAMES_MAP: ${{ secrets.Z2G_COLUMN_NAMES_MAP }}
+      Z2G_LABEL: ${{ secrets.Z2G_LABEL }}
+      Z2G_ORGANIZATION: ${{ secrets.Z2G_ORGANIZATION }}
+      Z2G_PROJECT: ${{ secrets.Z2G_PROJECT }}
+      Z2G_REPOSITORY: ${{ secrets.Z2G_REPOSITORY }}
+      Z2G_WORKSPACE_ID: ${{ secrets.Z2G_WORKSPACE_ID }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: ruby zh2gh.rb
