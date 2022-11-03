@@ -22,7 +22,10 @@ module Github
       GRAPHQL
     end
 
-    def set_issue_field(issue_id:, field_node_id:, option_node_id:)
+    def set_issue_field(issue_id:, field_node_id:, option_node_id: nil, value: nil)
+      value = %Q{text: #{value}} if value.is_a? String
+      value = %Q{number: #{value}} if value.is_a? Numeric
+      value = %Q{singleSelectOptionId: "#{option_node_id}"} if option_node_id
       query <<-GRAPHQL
       mutation {
         updateProjectV2ItemFieldValue(
@@ -31,7 +34,7 @@ module Github
             itemId: "#{issue_id}"
             fieldId: "#{field_node_id}"
             value: {
-              singleSelectOptionId: "#{option_node_id}"
+              #{value}
             }
           }
         ) {
@@ -92,10 +95,10 @@ module Github
       )[:data][:repository][:issue][:id]
     end
 
-    def issue_numbers_by_status
+    def issues_by_status
       unfiltered_issues_grouped = issues[:data][:node][:items][:nodes].map do |issue|
         [
-          issue[:content][:number],
+          issue,
           issue[:fieldValues][:nodes].find { |field| field[:field][:name] == "Status" rescue nil }[:name]
         ]
       end.to_h
@@ -132,6 +135,14 @@ module Github
                       nodes{
                         ... on ProjectV2ItemFieldTextValue {
                           text
+                          field {
+                            ... on ProjectV2FieldCommon {
+                              name
+                            }
+                          }
+                        }
+                        ... on ProjectV2ItemFieldNumberValue {
+                          number
                           field {
                             ... on ProjectV2FieldCommon {
                               name
@@ -210,6 +221,11 @@ module Github
     def query(query)
       response = client.post '/graphql', { query: query }.to_json
       p response if ENV['DEBUG']
+      if response[:errors]
+        puts "Query: #{query}"
+        puts response[:errors].map { |error| error[:message] }
+        raise 'GraphQL Error'
+      end
       response
     end
 

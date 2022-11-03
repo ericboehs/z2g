@@ -12,7 +12,7 @@ module Zenhub
       @issue_numbers = issue_numbers
     end
 
-    def mapped_issue_numbers_by_status
+    def mapped_issues_by_status
       column_names_map.map do |column_name, zh_column_names|
         column_issues = zh_column_names.map { |zh_column_name| issues[zh_column_name] }
         [column_name, column_issues.flatten]
@@ -25,10 +25,10 @@ module Zenhub
         response = client.workspace_data("#{organization}/#{repo}", id)
 
         response.body['pipelines'].map do |pipeline|
-          ws_issue_numbers = pipeline['issues'].map { |ws_issue| ws_issue['issue_number'] }
-          ws_issue_numbers = ws_issue_numbers.select { |ws_issue_number| issue_numbers.include? ws_issue_number }
+          ws_issues = pipeline['issues']
+          ws_issues = ws_issues.select { |ws_issue| issue_numbers.include? ws_issue['issue_number'] }
 
-          [pipeline['name'], ws_issue_numbers]
+          [pipeline['name'], ws_issues]
         end.to_h
       )
     end
