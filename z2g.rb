@@ -2,7 +2,7 @@ $LOAD_PATH.unshift 'lib'
 require 'dotenv'
 require 'github/project'
 require 'zenhub/workspace'
-require 'syncer'
+require 'z2g/syncer'
 require 'bundler/setup'
 require 'async'
 require 'async/semaphore'
@@ -27,7 +27,7 @@ workspace = Zenhub::Workspace.new(
   issue_numbers: project.issues_for_label.map { |issue| issue[:number] }
 )
 
-syncer = Syncer.new project: project, workspace: workspace
-syncer.sync
+syncer = Z2g::Syncer.new project: project, workspace: workspace
+syncer.sync_to_project
 
 puts 'Done.'
