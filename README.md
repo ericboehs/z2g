@@ -6,7 +6,7 @@ Estimates will sync as well. Closed issues are ignored.
 
 ## Usage
 
-Set the variables from .env.example with your desired values. Issues in the column map will be synced over accordingly.
+Set the variables from .env.local.example with your desired values. Issues in the column map will be synced over accordingly.
 
 ## Running via GitHub Actions
 

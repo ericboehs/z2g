@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Loads .env file automatically in development and test
+# Loads .env and .env.local files automatically
 class Dotenv
   def load(files)
     files.each { |file| load_file file }
