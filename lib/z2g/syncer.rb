@@ -13,11 +13,11 @@ module Z2g
         ws_issue_numbers_for_column = ws_issues_for_column.map { |ws_issue| ws_issue['issue_number'] }
 
         sort_in_sync =
-          project.issues_by_status[column_name].map { |pi| pi[:content][:number] } ==
-            ws_issue_numbers_for_column
+          project.issues_by_status[column_name]&.map { |pi| pi[:content][:number] } ==
+          ws_issue_numbers_for_column
         estimates_in_sync =
-          ws_issues_for_column.map { |wi| wi['estimate']['value'] rescue nil } ==
-            project.issues_by_status[column_name].map do |pi|
+          ws_issues_for_column&.map { |wi| wi['estimate']['value'] rescue nil } ==
+            project.issues_by_status[column_name]&.map do |pi|
               pi[:fieldValues][:nodes].find { |node| node[:field][:name] == "Points" rescue nil }[:number].to_i rescue nil
             end
 
