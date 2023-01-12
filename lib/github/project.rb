@@ -99,7 +99,7 @@ module Github
       unfiltered_issues_grouped = issues[:data][:node][:items][:nodes].map do |issue|
         [
           issue,
-          issue[:fieldValues][:nodes].find { |field| field[:field][:name] == "Status" rescue nil }[:name]
+          issue[:fieldValues][:nodes].find { |field| field[:field][:name] == "Status" rescue nil }&.[](:name)
         ]
       end.to_h
 
@@ -108,7 +108,7 @@ module Github
 
     def issue_ids_for_column(column_name)
       issues[:data][:node][:items][:nodes].map do |node|
-        issue_column_name = node[:fieldValues][:nodes].find { |field| field[:field][:name] == "Status" rescue nil }[:name]
+        issue_column_name = node[:fieldValues][:nodes].find { |field| field[:field][:name] == "Status" rescue nil }&.[](:name)
         node[:id] if issue_column_name == column_name
       end.compact
     end
