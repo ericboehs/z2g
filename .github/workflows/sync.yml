@@ -13,7 +13,7 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       ZH_TOKEN: ${{ secrets.ZH_TOKEN }}
-      Z2G_COLUMN_NAMES_MAP: '{"Backlog":["Current Sprint","Upcoming Sprint","Backlog","Current Initiatives/Epics","Icebox"],"In Progress":["Blocked/Has Dependency","Review/QA","In Progress"]}'
+      Z2G_COLUMN_NAMES_MAP: '{"Other":["Current Initiatives/Epics","Icebox"],"Backlog":["Upcoming Sprint","Backlog"],"Ready":["Current Sprint"],"Doing":["In Progress","Blocked/Has Dependency","Review/QA"]}'
       Z2G_LABEL: platform-tech-team-3
       Z2G_ORGANIZATION: department-of-veterans-affairs
       Z2G_PROJECT: 807
