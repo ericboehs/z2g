@@ -1,11 +1,11 @@
 name: Sync ZH to GH
 
 on:
-  push:
-    branches:
-      - master
-  schedule:
-    - cron: "*/15 * * * *"
+  # push:
+  #   branches:
+  #     - master
+  # schedule:
+  #   - cron: "*/15 * * * *"
   workflow_dispatch:
 
 jobs:
